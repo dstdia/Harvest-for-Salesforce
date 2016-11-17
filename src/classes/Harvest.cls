@@ -56,6 +56,7 @@ public virtual class Harvest {
 	}
 	
 	protected virtual Dom.Document getResponseBody(HttpResponse resp, HttpRequest req) {
+		
 		if (resp.getBody() == null)
 			return null;
 		else

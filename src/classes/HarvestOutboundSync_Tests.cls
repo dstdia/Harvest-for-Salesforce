@@ -1,5 +1,14 @@
-public with sharing class HarvestOutboundSync_Tests {
+@istest
+private class HarvestOutboundSync_Tests {
+
+    @testSetup
+    private static void setup() {
+
+        Harvest_TestSetup.init();
+    }
+
     private static Account getAccount() {
+        
         Account a = new Account();
         a.name = 'ut harvest account'; 
         a.sync_to_harvest__c = true;
@@ -34,7 +43,9 @@ public with sharing class HarvestOutboundSync_Tests {
     @istest
     private static void testHarvestClientSyncInsert() {
         Account a = getAccount();
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         system.debug('\n\n\nTESTING ACCOUNT INSERT\n\n\n');
         insert a;
         test.stopTest();
@@ -47,21 +58,29 @@ public with sharing class HarvestOutboundSync_Tests {
     private static void testHarvestClientSyncUpdate_Name() {
         Account a = getAccount();
         insert a;
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+
         system.debug('\n\n\nTESTING ACCOUNT UPDATE\n\n\n');
         a.Name = 'a new name for my account';
         a.Harvest_ID__c = 'test123';
         update a;
+        
         test.stopTest();
     }
 
     @istest
     private static void testHarvestClientSyncUpdate_BillingStreet() {
+
+
         Account a = getAccount();
         insert a;
         a.BillingStreet = '333 Main Street';
         a.Harvest_ID__c = 'test123';
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update a;
         test.stopTest();
     }
@@ -72,7 +91,9 @@ public with sharing class HarvestOutboundSync_Tests {
         insert a;
         a.BillingCity = 'Springfield';
         a.Harvest_ID__c = 'test123';
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update a;
         test.stopTest();
     }
@@ -83,7 +104,9 @@ public with sharing class HarvestOutboundSync_Tests {
         insert a;
         a.BillingState = 'VA';
         a.Harvest_ID__c = 'test123';
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update a;
         test.stopTest();
     }
@@ -94,7 +117,9 @@ public with sharing class HarvestOutboundSync_Tests {
         insert a;
         a.Website = 'www.newwebsite.com';
         a.Harvest_ID__c = 'test123';
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update a;
         test.stopTest();
     }
@@ -105,7 +130,9 @@ public with sharing class HarvestOutboundSync_Tests {
         insert a;
         a.Sync_To_Harvest__c = false;
         a.Harvest_ID__c = 'test123';
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update a;
         test.stopTest();
     }
@@ -115,7 +142,9 @@ public with sharing class HarvestOutboundSync_Tests {
         Account a = getAccount();
         a.Harvest_ID__c = 'test123';
         insert a;
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         delete a;
         test.stopTest();
     }
@@ -127,7 +156,9 @@ public with sharing class HarvestOutboundSync_Tests {
         insert a;
         Contact c = getContact();
         c.AccountId = a.Id;
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         insert c;
         test.stopTest();
     }
@@ -142,7 +173,9 @@ public with sharing class HarvestOutboundSync_Tests {
         c.Harvest_Id__c = '767676';
         insert c;
         c.LastName = 'Smith';
-        test.startTest();
+        
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update c;
         test.stopTest();
     }
@@ -157,7 +190,9 @@ public with sharing class HarvestOutboundSync_Tests {
         c.Harvest_Id__c = '767676';
         insert c;
         c.FirstName = 'Jimmy';
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update c;
         test.stopTest();
     }
@@ -172,13 +207,16 @@ public with sharing class HarvestOutboundSync_Tests {
         c.Harvest_Id__c = '767676';
         insert c;
         c.Email = 'Jimmy@gmail.com';
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         update c;
         test.stopTest();
     }
     
     @istest
     private static void testHarvestContactSyncDelete() {
+        
         Account a = getAccount();
         a.Harvest_ID__c = 'test123';
         insert a;
@@ -186,46 +224,65 @@ public with sharing class HarvestOutboundSync_Tests {
         c.AccountId = a.Id;
         c.Harvest_Id__c = '767676';
         insert c;
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
         delete c;
         test.stopTest();
     }
     
     @istest
     private static void testHarvestProjectSyncInsert() {
-        Account a = getAccount();
+        
+            Account a = getAccount();
         a.Harvest_ID__c = 'test123';
         insert a;
+        
         Harvest_Project__c p = getProject();
         p.Account__c = a.Id;
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+        
         insert p;
+        
         test.stopTest();
     }
     
     @istest
     private static void testHarvestProjectSyncUpdate() {
+        
         Account a = getAccount();
         a.Harvest_ID__c = 'test123';
         insert a;
+        
         Harvest_Project__c p = getProject();
         p.Account__c = a.Id;
         insert p;
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+        
         p.Name = 'unittest new name';
         update p;
-        test.stopTest();
+        
+        Test.stopTest();
     }
     
     @istest
     private static void testHarvestProjectSyncDelete() {
+        
         Account a = getAccount();
         a.Harvest_ID__c = 'test123';
         insert a;
+        
         Harvest_Project__c p = getProject();
         p.Account__c = a.Id;
         insert p;
-        test.startTest();
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+        
         delete p;
         test.stopTest();
     }

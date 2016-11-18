@@ -774,6 +774,6 @@ window.location.reload();</url>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>http://{!$Setup.hvst__Harvest__c.hvst__Subdomain__c}.harvestapp.com/invoices/{!Harvest_Invoice__c.Harvest_ID__c}/edit</url>
+        <url>http://{!$Setup.Harvest__c.Subdomain__c}.harvestapp.com/invoices/{!Harvest_Invoice__c.Harvest_ID__c}/edit</url>
     </webLinks>
 </CustomObject>

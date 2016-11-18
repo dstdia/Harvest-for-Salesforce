@@ -1,31 +1,35 @@
 public class Harvest_TestUtil {
+    
     public class HarvestTester extends Harvest {
+        
         public HarvestTester() {
             super();
         } 
         
         public override Harvest__c getSettings() {
-        	if (Harvest__c.getInstance() == null)
-        		upsert new Harvest__c(SetupOwnerId=UserInfo.getOrganizationId());
-			Harvest__c settings = Harvest__c.getOrgDefaults();
-   			if (settings.Password__c == 'toolkittesting') {
-   				return settings;
-   			} else {
-	   			settings.Create_Harvest_Project_Automatically__c = true;
-	   			settings.Delete_Client_In_Harvest__c = true;
-	   			settings.SSL__c = true;
-	   			settings.Subdomain__c = 'somesubdomain';
-	   			settings.Username__c = 'foo';
-	   			settings.Password__c = 'toolkittesting';
-		   		upsert settings; 
-   			}
-	   		return settings;		
+            if (Harvest__c.getInstance() == null)
+                upsert new Harvest__c(SetupOwnerId=UserInfo.getOrganizationId());
+            Harvest__c settings = Harvest__c.getOrgDefaults();
+            if (settings.Password__c == 'toolkittesting') {
+                return settings;
+            } else {
+                settings.Create_Harvest_Project_Automatically__c = true;
+                settings.Delete_Client_In_Harvest__c = true;
+                settings.SSL__c = true;
+                settings.Subdomain__c = 'somesubdomain';
+                settings.Username__c = 'foo';
+                settings.Password__c = 'toolkittesting';
+                upsert settings; 
+            }
+            return settings;        
         }
                 
         public override String getBulkResponseBody(HttpResponse resp, HttpRequest req) {
-            super.getResponseBody(resp, req);
+            
+            //super.getResponseBody(resp, req);
             String ep = req.getEndpoint();
             System.debug(LoggingLevel.INFO, '\n\nGET RESPONSE FOR ' + ep + '\n\n');
+            
             String body = '';
             if (ep.contains('harvestapp.com/clients/batch_create')) {
                 System.debug(LoggingLevel.INFO, '\n\n BULK CLIENT CREATE VERIFY \n\n');
@@ -36,19 +40,23 @@ public class Harvest_TestUtil {
         }
         
         public override Dom.Document getResponseBody(HttpResponse resp, HttpRequest req) {
-            super.getResponseBody(resp, req);
+            
+
+            //super.getResponseBody(resp, req);
             String ep = req.getEndpoint();
+            
             System.debug(LoggingLevel.INFO, '\n\nGET RESPONSE FOR ' + ep + '\n\n');
             String body = '';
+
             if (ep.contains('harvestapp.com/account/who_am_i')) {
                 System.debug(LoggingLevel.INFO, '\n\n LOGIN VERIFY \n\n');
                 body = whoAmIResponse;
             } else if (ep.contains('harvestapp.com/tasks')) {
                 System.debug(LoggingLevel.INFO, '\n\n GET TASKS VERIFY \n\n');
                 if (ep.endsWith('/'))
-                	body = getTasksResponse;
-            	else
-            		body = getTaskResponse;
+                    body = getTasksResponse;
+                else
+                    body = getTaskResponse;
             } else if (ep.contains('harvestapp.com/clients/') && ep.contains('/contacts/')) {
                 System.debug(LoggingLevel.INFO, '\n\n GET CONTACTS VERIFY \n\n');
                 body = getContactsForClientResponse;
@@ -217,7 +225,7 @@ public class Harvest_TestUtil {
         return '<?xml version="1.0" encoding="UTF-8"?>' +
             '<contacts type="array">'+
               '<contact>'+
-                '<id type="integer">9</id>'+
+                '<id type="integer">10</id>'+
                 '<client-id type="integer">11072</client-id>'+
                 '<email>Jane@Doe.com</email>'+
                 '<first-name>Jane</first-name>'+
@@ -281,12 +289,27 @@ public class Harvest_TestUtil {
                   '<active type="boolean">true</active>'+
                   '<billable type="boolean">false</billable>'+
                   '<bill-by>none</bill-by>'+
+                  '<hourly-rate>10.50</hourly-rate>'+
                   '<client-id type="integer">2</client-id>'+
                   '<code></code>'+
                   '<notes></notes>'+
                   '<budget-by>none</budget-by>'+
                   '<budget type="decimal"></budget>'+
-                  '<fees></fees>'+
+                      '<notify-when-over-budget>true</notify-when-over-budget>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notified-at></over-budget-notified-at>'+
+                  '<show-budget-to-all></show-budget-to-all>'+
+                  '<created-at></created-at>'+
+                  '<updated-at></updated-at>'+
+                  '<ends-on></ends-on>'+
+                  '<estimate></estimate>'+
+                  '<estimate-by></estimate-by>'+
+                  '<hint-earliest-record-at></hint-earliest-record-at>'+
+                  '<hint-latest-record-at></hint-latest-record-at>'+
+                  '<cost-budget></cost-budget>'+
+                  '<cost-budget-include-expenses></cost-budget-include-expenses>'+
+                
                 '</project>' + 
             '</projects>';
         }   
@@ -301,17 +324,32 @@ public class Harvest_TestUtil {
                   '<active type="boolean">true</active>'+
                   '<billable type="boolean">false</billable>'+
                   '<bill-by>none</bill-by>'+
+                  '<hourly-rate>10.50</hourly-rate>'+
                   '<client-id type="integer">2</client-id>'+
                   '<code></code>'+
                   '<notes></notes>'+
                   '<budget-by>none</budget-by>'+
                   '<budget type="decimal"></budget>'+
                   '<fees></fees>'+
+                  '<notify-when-over-budget>true</notify-when-over-budget>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notified-at></over-budget-notified-at>'+
+                  '<show-budget-to-all></show-budget-to-all>'+
+                  '<created-at></created-at>'+
+                  '<updated-at></updated-at>'+
+                  '<ends-on></ends-on>'+
+                  '<estimate></estimate>'+
+                  '<estimate-by></estimate-by>'+
+                  '<hint-earliest-record-at></hint-earliest-record-at>'+
+                  '<hint-latest-record-at></hint-latest-record-at>'+
+                  '<cost-budget></cost-budget>'+
+                  '<cost-budget-include-expenses></cost-budget-include-expenses>'+
                 '</project>' + 
             '</projects>';
         }   
     }
-    
+       
     public static String getProjectResponse { get {
         return '<?xml version="1.0" encoding="UTF-8"?>' +
                 '<project>'+
@@ -321,10 +359,25 @@ public class Harvest_TestUtil {
                   '<billable type="boolean">false</billable>'+
                   '<bill-by>none</bill-by>'+
                   '<client-id type="integer">2</client-id>'+
+                  '<hourly-rate>10.50</hourly-rate>'+
                   '<code></code>'+
                   '<notes></notes>'+
                   '<budget-by>none</budget-by>'+
                   '<budget type="decimal"></budget>'+
+                  '<notify-when-over-budget>true</notify-when-over-budget>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notification-percentage>80</over-budget-notification-percentage>'+
+                  '<over-budget-notified-at></over-budget-notified-at>'+
+                  '<show-budget-to-all></show-budget-to-all>'+
+                  '<created-at></created-at>'+
+                  '<updated-at></updated-at>'+
+                  '<ends-on></ends-on>'+
+                  '<estimate></estimate>'+
+                  '<estimate-by></estimate-by>'+
+                  '<hint-earliest-record-at></hint-earliest-record-at>'+
+                  '<hint-latest-record-at></hint-latest-record-at>'+
+                  '<cost-budget></cost-budget>'+
+                  '<cost-budget-include-expenses></cost-budget-include-expenses>'+
                   '<fees></fees>'+
                 '</project>';
         }   
@@ -438,6 +491,7 @@ public class Harvest_TestUtil {
                 '<first-name>Jane</first-name>'+
                 '<last-name>Doe</last-name>'+
                 '<has-access-to-all-future-projects type="boolean">false</has-access-to-all-future-projects>'+
+                '<has-wants-to-all-future-projects type="boolean">false</has-access-to-all-future-projects>'+
                 '<default-hourly-rate type="decimal">100</default-hourly-rate>'+
                 '<is-active type="boolean">true</is-active>'+
                 '<is-admin type="boolean">true</is-admin>'+
@@ -471,29 +525,29 @@ public class Harvest_TestUtil {
     
     public static String getTasksResponse { get {
         return '<?xml version="1.0" encoding="UTF-8"?>' +
-			'<tasks type="array">' +
-				'<task>' +
-				  '<billable-by-default type="boolean">true</billable-by-default>' +
-				  '<deactivated type="boolean">false</deactivated>' +
-				  '<default-hourly-rate type="decimal">120</default-hourly-rate>' +
-				  '<id type="integer">1</id>' +
-				  '<is-default type="boolean">true</is-default>' +
-				  '<name>UI Design</name>' +
-				'</task>' +
-			'</tasks>';
+            '<tasks type="array">' +
+                '<task>' +
+                  '<billable-by-default type="boolean">true</billable-by-default>' +
+                  '<deactivated type="boolean">false</deactivated>' +
+                  '<default-hourly-rate type="decimal">120</default-hourly-rate>' +
+                  '<id type="integer">1</id>' +
+                  '<is-default type="boolean">true</is-default>' +
+                  '<name>UI Design</name>' +
+                '</task>' +
+            '</tasks>';
         }   
     }
     
     public static String getTaskResponse { get {
         return '<?xml version="1.0" encoding="UTF-8"?>' +
-			'<task>' +
-			  '<billable-by-default type="boolean">true</billable-by-default>' +
-			  '<deactivated type="boolean">false</deactivated>' +
-			  '<default-hourly-rate type="decimal">120</default-hourly-rate>' +
-			  '<id type="integer">1</id>' +
-			  '<is-default type="boolean">true</is-default>' +
-			  '<name>UI Design</name>' +
-			'</task>';
+            '<task>' +
+              '<billable-by-default type="boolean">true</billable-by-default>' +
+              '<deactivated type="boolean">false</deactivated>' +
+              '<default-hourly-rate type="decimal">120</default-hourly-rate>' +
+              '<id type="integer">1</id>' +
+              '<is-default type="boolean">true</is-default>' +
+              '<name>UI Design</name>' +
+            '</task>';
         }   
     }
     
@@ -529,7 +583,6 @@ public class Harvest_TestUtil {
         p.budgetBy = 'Hours';
         p.clientId = '1234';
         p.code = '333444';
-        p.fees = '12345';
         p.name = 'unittest project';
         p.notes = 'some notes';
         return p;
@@ -554,12 +607,12 @@ public class Harvest_TestUtil {
     
     public static HarvestTask getTask() {
         HarvestTask t = new HarvestTask();
-		t.name = 'foo';
-		t.id = 'bar';
-		t.billableByDefault = true;
-		t.deactivated = false;
-		t.defaultHourlyRate = '10';
-		t.isDefault = true;
+        t.name = 'foo';
+        t.id = 'bar';
+        t.billableByDefault = true;
+        t.deactivated = false;
+        t.defaultHourlyRate = '10';
+        t.isDefault = true;
         return t;
     }
     

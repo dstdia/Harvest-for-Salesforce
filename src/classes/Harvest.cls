@@ -56,15 +56,19 @@ public virtual class Harvest {
 	}
 	
 	protected virtual Dom.Document getResponseBody(HttpResponse resp, HttpRequest req) {
+		
 		if (resp.getBody() == null)
+			
 			return null;
-		else
-			return resp.getBodyDocument();
+		else {
+
+			return resp.getBodyDocument();}
 	}
 	
 	protected virtual HttpRequest createRequest(String method, String path) {
     	
     	HttpRequest req = new HttpRequest();
+     	
      	req.setHeader('Accept', 'application/xml');
      	req.setHeader('Content-Type', 'application/xml');
      	
@@ -93,6 +97,7 @@ public virtual class Harvest {
     }
     
 	public virtual HttpRequest createRequest(String method, String path, map<String, String> params) {
+		
 		String paramString = '';
 		for (String key : params.keySet()) {
 			if (params.get(key) != null) {
@@ -184,6 +189,7 @@ public virtual class Harvest {
 		
 	public List<HarvestClient> getClients() {
 		HttpRequest req = createRequest('GET', 'clients/');
+
 		HttpResponse resp = execute(req);
 		system.debug(resp.getBody());
 		return parseClients(this.getResponseBody(resp, req));
@@ -428,7 +434,7 @@ public virtual class Harvest {
 			u.isContractor = HarvestUtil.convertBoolean(node.getChildElement('is-contractor', null).getText());
 			u.telephone = node.getChildElement('telephone', null).getText();
 			u.department = node.getChildElement('department', null).getText();
-			u.timeZone = node.getChildElement('timezone', null).getText();			
+			u.timeZone = node.getChildElement('timezone', null).getText();
 		}
 		return u;
 	}
@@ -732,8 +738,10 @@ public virtual class Harvest {
 	}
 	
 	public virtual String getLocationHeader(HttpResponse resp) {
+		
 		if (resp.getBody() == null)
 			return null;
+		
 		else {
 			return resp.getHeader('Location');
 		}
@@ -776,9 +784,12 @@ public virtual class Harvest {
 	}
 		
 	public String insertClientContact(map<String, String> params) {
-		HttpRequest req = createRequest('POST', 'contacts/', params);
+
+		HttpRequest req = createRequest('POST', 'contacts/', params);	
 		req.setBody('<contact>'+req.getBody()+'</contact>');	
+
 		HttpResponse resp = execute(req);
+		
 		String loc = this.getLocationHeader(resp);
 		loc = loc.substring(loc.lastIndexOf('/') + 1, loc.length());
 		return loc;

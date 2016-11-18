@@ -6,10 +6,14 @@ private class HarvestCreateClientController_Test {
     static {
         system.debug('$$$CALLING STATIC$$$');
         ht = new Harvest_TestUtil.HarvestTester();
+
+        Harvest_TestSetup.init();
     }
     
     static Account getAccount() {
+        
         Account a = new Account();
+       
         a.name = 'Client Test 3'; 
         a.sync_to_harvest__c = false;
         a.isActiveHarvestClient__c = false;
@@ -21,6 +25,7 @@ private class HarvestCreateClientController_Test {
         a.website = 'www.ut-harvest-test.com';
         a.phone = '4445556666';
         a.fax = '3332221111';
+        
         return a;
     }
     
@@ -48,16 +53,26 @@ private class HarvestCreateClientController_Test {
     } 
     
     static testMethod void testCreateClientController() {
+
+
         Account a = getAccount();
         insert a;
         Contact c = getContact(a);
         insert c;
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+        
         PageReference testPage = Page.HarvestCreateClient;
         Test.setCurrentPageReference(testPage);
         HarvestCreateClientController controller = new HarvestCreateClientController(new ApexPages.StandardController(a));
         controller.connection = ht;
+        
         controller.init();
+        
         controller.doCreateClient();
+
+        Test.stopTest();
     } 
     
     static testMethod void testOverloadedController() {
@@ -65,10 +80,15 @@ private class HarvestCreateClientController_Test {
         insert a;
         Contact c = getContact(a);
         insert c;
+
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();    
+
         PageReference testPage = Page.HarvestCreateClient;
         Test.setCurrentPageReference(testPage);
         HarvestCreateClientController controller = new HarvestCreateClientController(a.Id);
         controller.connection = ht;
         controller.init();
+        Test.stopTest();
     } 
 }

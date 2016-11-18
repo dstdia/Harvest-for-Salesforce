@@ -204,7 +204,7 @@ public class HarvestUtil {
         hu.Phone__c = u.telephone;
         hu.Timezone__c = u.timeZone;
         hu.Add_to_all_new_projects_automatically__c = u.hasAccessToAllFutureProjects;
-        hu.Has_Wants_Newsletter__c = u.wantsNewsletter;
+        //hu.Has_Wants_Newsletter__c = u.wantsNewsletter;
         hu.Cost_Rate__c = u.costRate;
         hu.Created_At__c = u.createdAt;
         hu.Updated_At__c = u.updatedAt;

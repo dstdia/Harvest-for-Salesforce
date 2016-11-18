@@ -1,4 +1,6 @@
+@isTest
 public class HarvestUtil_Test {
+    
     static testMethod void runTests() {
         HarvestUtil.convertBoolean('true');
         HarvestUtil.convertDateTime('10101010101010110101010101010101010');

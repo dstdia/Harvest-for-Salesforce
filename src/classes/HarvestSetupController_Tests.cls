@@ -35,8 +35,13 @@ private class HarvestSetupController_Tests {
     }
     
     private static testMethod void testSetupController() {
+
         Account a = getAccount();
         Contact c = getContact();
+
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+
         try {
         PageReference setupPage = Page.HarvestSetup;
         Test.setCurrentPageReference(setupPage);
@@ -66,5 +71,7 @@ private class HarvestSetupController_Tests {
         } catch(Exception e) {
         	system.debug(e);
         }
+
+        Test.stopTest();
     }
 }

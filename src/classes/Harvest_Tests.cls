@@ -7,6 +7,12 @@ private class Harvest_Tests {
 		system.debug('$$$CALLING STATIC$$$');
 		ht = new Harvest_TestUtil.HarvestTester();
 	} 
+
+	@testSetup
+    private static void setup() {
+
+        Harvest_TestSetup.init();
+    }
 		
 	static testMethod void testGetRequests() {
 		ht.getClients(); 
@@ -90,12 +96,19 @@ private class Harvest_Tests {
     }
     
     static testMethod void testHarvestClientExportWizard() {
-		Account a = new Account();
+
+    	Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+
+    	Account a = new Account();
 		a.Name = 'Unittest Client 1';
 		insert a;
 		Account a2 = new Account();
 		a2.Name = 'Unittest Client 2';
 		insert a2;
+		
+        Test.startTest();
+
+		
 		PageReference clientExportWizard = Page.HarvestClientExportWizard;
 		Test.setCurrentPageReference(clientExportWizard);
 		HarvestClientExportWizard controller = new HarvestClientExportWizard();
@@ -122,6 +135,8 @@ private class Harvest_Tests {
 		controller.accounts.get(0).isSelected = true;
 		controller.putInExportQueue();
 		controller.doExport();
+
+		Test.stopTest();
     }
     
     static testMethod void testProjectOnClosedOpportunity() {
@@ -129,6 +144,9 @@ private class Harvest_Tests {
    		//settings.Create_Harvest_Project_Automatically__c = true;
    		//update settings;
    		
+   		Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+
    		Account a = new Account();
    		a.Name = 'unittest';
    		a.Harvest_Id__c = 'xyxy1234';
@@ -140,9 +158,15 @@ private class Harvest_Tests {
    		o.CloseDate = Date.today();
    		o.StageName = 'Closed Won';
    		insert o;
+
+   		Test.stopTest();
     }
     
     static testMethod void testProjectOnClosedOpportunity_Update() {
+
+    	Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+
    		Account a = new Account();
    		a.Name = 'unittest';
    		a.Harvest_Id__c = 'xyxy1234';
@@ -157,18 +181,30 @@ private class Harvest_Tests {
    		
    		o.StageName = 'Closed Won';
    		update o;
+
+   		Test.stopTest();
    		
     }
     
     static testMethod void testHarvestUser() {
+
+    	Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+
 		Harvest_User__c u = new Harvest_User__c();
 		u.Add_to_all_new_projects_automatically__c = true;
 		u.First_name__c = 'Mike';
 		u.Last_name__c = 'Smith';
 		insert u;
+
+		Test.stopTest();
     }
     
     static testMethod void testHarvestUser_update() {
+
+		Test.setMock(HttpCalloutMock.class, new Harvest_MockHandler());
+        Test.startTest();
+
 		Harvest_User__c u = new Harvest_User__c();
 		u.Add_to_all_new_projects_automatically__c = true;
 		u.First_name__c = 'Mike';
@@ -177,6 +213,8 @@ private class Harvest_Tests {
 		
 		u.Last_name__c = 'Smythe';
 		update u;
+
+		Test.stopTest();
     }
     
     static testMethod void testHarvestInvoiceMessage() {

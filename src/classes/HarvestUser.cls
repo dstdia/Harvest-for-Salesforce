@@ -12,7 +12,7 @@ public class HarvestUser {
     public String telephone { get; set; }
     public String department { get; set; }
     public String timeZone { get; set; }
-    public Boolean wantsNewsletter { get; set; }
+    //public String wantsNewsletter { get; set; }
     public Decimal costRate { get; set; }
     public Datetime createdAt { get; set; }
     public Datetime updatedAt { get; set; }

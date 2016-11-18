@@ -225,7 +225,7 @@ public class Harvest_TestUtil {
         return '<?xml version="1.0" encoding="UTF-8"?>' +
             '<contacts type="array">'+
               '<contact>'+
-                '<id type="integer">9</id>'+
+                '<id type="integer">10</id>'+
                 '<client-id type="integer">11072</client-id>'+
                 '<email>Jane@Doe.com</email>'+
                 '<first-name>Jane</first-name>'+
@@ -491,6 +491,7 @@ public class Harvest_TestUtil {
                 '<first-name>Jane</first-name>'+
                 '<last-name>Doe</last-name>'+
                 '<has-access-to-all-future-projects type="boolean">false</has-access-to-all-future-projects>'+
+                '<has-wants-to-all-future-projects type="boolean">false</has-access-to-all-future-projects>'+
                 '<default-hourly-rate type="decimal">100</default-hourly-rate>'+
                 '<is-active type="boolean">true</is-active>'+
                 '<is-admin type="boolean">true</is-admin>'+

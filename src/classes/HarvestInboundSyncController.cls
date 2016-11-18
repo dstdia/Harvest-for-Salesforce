@@ -18,8 +18,7 @@ global class HarvestInboundSyncController {
 		} 
 
         else {
-        
-        	clients = h.getClients();
+            clients = h.getClients();
         	hContacts = h.getContacts();
         	hProjects = h.getProjects();
 		}
@@ -63,7 +62,8 @@ global class HarvestInboundSyncController {
         
         for (HarvestContact c : hContacts) {
             contacts.add(HarvestUtil.transformContact(c, accountMap));
-        }   
+        }  
+
         upsert contacts Harvest_Id__c;  
                 
         /*PROCESS PROJECTS*/

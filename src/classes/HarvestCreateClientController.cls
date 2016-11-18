@@ -24,8 +24,13 @@ public with sharing class HarvestCreateClientController {
     }
     
     public PageReference init() {
+        
         if (this.connection == null)
             this.connection = new Harvest();
+
+        if (this.matchingClients == null)
+            this.matchingClients = new List<ClientWrapper>();
+        
         if (this.a.Harvest_Id__c != null) {
             ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'This client already exists within Harvest');
             ApexPages.addMessage(error);
@@ -36,14 +41,20 @@ public with sharing class HarvestCreateClientController {
     }
     
     public void doGetClients() {
+        
         this.matchingClients.clear();
+        
         for (HarvestClient hc : connection.getClients()) {
+            
             if (hc.Name == this.a.Name) {
                 this.matchingClients.add(new ClientWrapper(hc));
             }
         }
+        
         if (this.matchingClients.size() > 0)
+        
         	this.matchingClients.get(0).isSelected = true;
+        
         if (this.matchingClients.size() > 0) {
             ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.INFO, 'Would you like to merge this account with one of the following Harvest Clients?');
             ApexPages.addMessage(error);

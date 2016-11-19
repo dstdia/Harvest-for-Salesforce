@@ -126,7 +126,8 @@ public class HarvestUtil {
 		
         Harvest_Task__c ht = new Harvest_Task__c();
 		
-        ht.Name = t.name;
+        ht.Name = t.name.left(80);
+        ht.LongName__c = t.name;
 		ht.Billable_by_default__c = t.billableByDefault;
 		ht.Default_hourly_rate__c = convertDouble(t.defaultHourlyRate);
 		ht.Harvest_ID__c = t.id;
